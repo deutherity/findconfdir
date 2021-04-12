@@ -1,6 +1,8 @@
 #include "findconfdir.hpp"
-#include "projectname.hpp"
 #include <cstdlib>
+#ifndef PROJECTNAME
+#define PROJECTNAME "pwhash"
+#endif
 #include <filesystem>
 extern "C" {
 #include <pwd.h>
