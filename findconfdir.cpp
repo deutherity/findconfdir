@@ -1,18 +1,18 @@
 #include "findconfdir.hpp"
-#include <cstdlib>
 #ifndef PROJECTNAME
-#define PROJECTNAME "pwhash"
+#define PROJECTNAME "test"
 #endif
-#include <filesystem>
 extern "C" {
 #include <pwd.h>
 #include <sys/types.h>
 #include <unistd.h>
 }
 
-namespace fs = std::filesystem;
-std::string findconfdir(bool create) {
-    fs::path respath;
+fs::path findconfdir(bool create) {
+    static fs::path respath;
+    if (!respath.empty()) {
+        return respath;
+    }
     const char *config_path = std::getenv("XDG_CONFIG_HOME");
     if (config_path != nullptr)
         respath = config_path;
@@ -29,5 +29,5 @@ std::string findconfdir(bool create) {
         return respath.string();
     } else if (!fs::exists(respath) || !fs::is_directory(respath))
         throw 1;
-    return respath.string();
+    return respath;
 }
